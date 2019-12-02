@@ -187,8 +187,8 @@ export FILECOIN_REPO="$FILPATH"
 alias filecoin="go-filecoin --repodir=$FILPATH"
 alias chain='filecoin show block `filecoin chain head|head -n 1`;date'
 alias fil='filecoin wallet balance `filecoin address ls`;date'
-alias miner='filecoin config mining.minerAddress | tr -d  \"'
-alias power='filecoin miner power `filecoin config mining.minerAddress | tr -d \"`'
+alias miner='filecoin mining address'
+alias power='filecoin miner power `filecoin mining address`'
 alias completed='filecoin deals list --miner | grep complete | wc -l'
 alias rejected='filecoin deals list --miner | grep rejected | wc -l'
 alias staged='filecoin deals list --miner | grep staged | wc -l'
@@ -310,10 +310,10 @@ fi
 PREV_PID=`ps -ef | grep "go-filecoin --repodir=${FILECOIN_REPO}" |grep -v grep | awk '{print $2}'`
 if [ "${PREV_PID}" = "" ]; then
     CURRENT_TIME=`date +%Y%m%d%H%M`
-    FILECOIN_LOGFILE=filecoin_${CURRENT_TIME}.log
+    FILECOIN_LOGFILE=filecoin.log
     echo "Currently there is no filecoin daemon for repo ${FILECOIN_REPO}."
     echo "Now restart the daemon. The log file is ${FILECOIN_LOGFILE}." 
-    nohup go-filecoin --repodir=${FILECOIN_REPO} daemon 1>${LOGDIR}/${FILECOIN_LOGFILE} 2>&1 &
+    nohup go-filecoin --repodir=${FILECOIN_REPO} daemon 1>>${LOGDIR}/${FILECOIN_LOGFILE} 2>&1 &
     
     sleep 10
 
