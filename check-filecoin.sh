@@ -25,8 +25,8 @@ mkdir -p ${LOGDIR}
 
 PREV_PID=`ps -ef | grep "go-filecoin --repodir=${FILECOIN_REPO} daemon" |grep -v grep | awk '{print $2}'`
 if [ "${PREV_PID}" = "" ]; then
-    logger "Restart filecoin daemon."
-    nohup ${BINDIR}/go-filecoin --repodir=${FILECOIN_REPO} daemon 1>${LOGDIR}/filecoin_`date +%Y%m%d%H%M`.log 2>&1 &
+    echo "<`date +%H:%M:%S`>Restart filecoin daemon." >> ${LOGDIR}/filecoin.log
+    nohup ${BINDIR}/go-filecoin --repodir=${FILECOIN_REPO} daemon 1>>${LOGDIR}/filecoin.log 2>&1 &
 fi
 
 MINING_STATUS=`go-filecoin --repodir=${FILECOIN_REPO}  mining status | grep Active | awk '{print $2}'`
